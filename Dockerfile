@@ -1,7 +1,14 @@
-FROM python:3
-MAINTAINER Erol Karabog "krbg.erol@gmail.com"
-COPY . /app
-WORKDIR /app
-RUN pip install -r requirements.txt
-ENTRYPOINT ["python"]
-CMD ["app.py"]
+FROM centos
+
+MAINTAINER krbg.erol@gmail.com
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+      && yum update -y \
+      && yum install -y python-pip \
+      && pip install flask
+
+COPY . /src
+
+EXPOSE 5000
+
+CMD cd /src && python app.py
