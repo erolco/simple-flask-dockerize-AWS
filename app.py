@@ -1,14 +1,9 @@
-FROM centos
+from flask import Flask
+app = Flask(__name__)
 
-MAINTAINER krbg.erol@gmail.com
+@app.route("/")
+def hello():
+    return "Hello World"
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-      && yum update -y \
-      && yum install -y python-pip \
-      && pip install flask
-
-COPY . /src
-
-EXPOSE 5000
-
-CMD cd /src && python app.py
+if __name__ == '__main__':
+    app.run(threaded=True,host='0.0.0.0',port=5000)
