@@ -1,13 +1,14 @@
-from flask import Flask
-import os
+FROM centos
 
-app = Flask(__name__)
+MAINTAINER krbg.erol@gmail.com
 
-@app.route("/")
-def hello():
-    return "Flask inside Docker!!"
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+      && yum update -y \
+      && yum install -y python-pip \
+      && pip install flask
 
+COPY . /src
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True,host='0.0.0.0',port=port)
+EXPOSE 5000
+
+CMD cd /src && python app.py
